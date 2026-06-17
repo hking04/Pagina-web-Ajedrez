@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mundo del Ajedrez ♟️</title>
+
+<style>
+
+:root{
+    --verde-principal:#81b64c;
+    --verde-oscuro:#5f8f2f;
+    --crema:#f5f5dc;
+    --blanco:#ffffff;
+    --negro:#2c2c2c;
+    --gris:#f0f0f0;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:var(--crema);
+    color:var(--negro);
+    line-height:1.6;
+}
+
+/* NAV */
+
+.navbar{
+    background:var(--verde-oscuro);
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+
+.nav-container{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 20px;
+}
+
+.nav-logo{
+    color:white;
+    font-weight:bold;
+    font-size:1.2rem;
+    text-decoration:none;
+}
+
+.nav-links{
+    list-style:none;
+    display:flex;
+    gap:25px;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    font-weight:500;
+    padding:6px 4px;
+    border-bottom:2px solid transparent;
+    transition:.25s;
+}
+
+.nav-links a:hover{
+    border-bottom:2px solid var(--verde-principal);
+    color:var(--verde-principal);
+}
+
+.nav-toggle{
+    display:none;
+    background:none;
+    border:none;
+    color:white;
+    font-size:1.6rem;
+    cursor:pointer;
+}
+
+@media (max-width:768px){
+
+    .nav-toggle{
+        display:block;
+    }
+
+    .nav-links{
+        position:fixed;
+        top:0;
+        right:0;
+        height:100vh;
+        width:220px;
+        background:var(--verde-oscuro);
+        flex-direction:column;
+        align-items:flex-start;
+        padding:80px 25px;
+        gap:20px;
+        transform:translateX(100%);
+        transition:transform .35s ease;
+    }
+
+    .nav-links.activo{
+        transform:translateX(0);
+    }
+}
+
+/* HEADER */
+
+header{
+    background:linear-gradient(135deg,var(--verde-principal),var(--verde-oscuro));
+    color:white;
+    text-align:center;
+    padding:50px 20px;
+    scroll-margin-top:70px;
+}
+
+header h1{
+    font-size:3rem;
+}
+
+header p{
+    font-size:1.2rem;
+}
+
+/* SECCIONES */
+
+section{
+    max-width:1200px;
+    margin:auto;
+    padding:40px 20px;
+    scroll-margin-top:70px;
+}
+
+h2{
+    color:var(--verde-oscuro);
+    margin-bottom:20px;
+    border-left:8px solid var(--verde-principal);
+    padding-left:10px;
+}
+
+/* IMAGEN DE INTRODUCCIÓN */
+
+.intro-flex{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:30px;
+}
+
+.intro-flex img{
+    width:260px;
+    border-radius:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+.intro-flex .card{
+    flex:1;
+    min-width:260px;
+}
+
+/* TARJETAS */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,.1);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+/* TOP JUGADORES */
+
+.jugadores{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.jugador{
+    background:white;
+    border-radius:15px;
+    text-align:center;
+    padding:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+
+.jugador img{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:12px;
+    border:3px solid var(--verde-principal);
+}
+
+.jugador h3{
+    color:var(--verde-oscuro);
+}
+
+/* MAPA CONCEPTUAL */
+
+.mapa{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:30px;
+}
+
+.centro{
+    background:var(--verde-principal);
+    color:white;
+    padding:20px 35px;
+    border-radius:15px;
+    font-size:1.5rem;
+    font-weight:bold;
+}
+
+.ramas{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+}
+
+.nodo{
+    background:white;
+    width:220px;
+    padding:15px;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,.1);
+    text-align:center;
+}
+
+.nodo h4{
+    color:var(--verde-oscuro);
+    margin-bottom:10px;
+}
+
+/* FOOTER */
+
+footer{
+    background:var(--verde-oscuro);
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="#inicio" class="nav-logo">♟️ Mundo del Ajedrez</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#que-es">Qué es</a></li>
+            <li><a href="#historia">Historia</a></li>
+            <li><a href="#jugadores">Jugadores</a></li>
+            <li><a href="#mapa">Mapa</a></li>
+        </ul>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+    </div>
+</nav>
+
+<header id="inicio">
+    <h1>♟️ Mundo del Ajedrez 👑</h1>
+    <p>Aprende los fundamentos del deporte mental más famoso del mundo 🏆</p>
+</header>
+
+<section id="que-es">
+    <h2>📚 ¿Qué es el ajedrez?</h2>
+
+    <div class="intro-flex">
+        <img src= "C:\Users\SENA\Downloads\TABLERO.png" alt="Tablero de ajedrez">
+        <div class="card">
+            <p>
+                El ajedrez es un juego de estrategia para dos jugadores que se desarrolla
+                sobre un tablero de 64 casillas. Cada participante controla 16 piezas y
+                busca dar <strong>jaque mate</strong> al rey rival. Es considerado un deporte
+                mental porque desarrolla habilidades como la concentración, la lógica,
+                la memoria y la toma de decisiones.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section id="historia">
+    <h2>📜 Un poco de historia</h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>🏰 Origen</h3>
+            <p>
+                Surgió en la India alrededor del siglo VI con un juego llamado
+                "Chaturanga".
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>🌍 Expansión</h3>
+            <p>
+                Llegó a Persia y posteriormente a Europa durante la Edad Media.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>♟️ Modernización</h3>
+            <p>
+                En el siglo XV se establecieron las reglas modernas del ajedrez.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>🏆 Competición</h3>
+            <p>
+                Actualmente existen torneos internacionales y campeonatos mundiales.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<section id="jugadores">
+    <h2>🌟 Top 5 mejores jugadores del mundo</h2>
+
+    <div class="jugadores">
+
+        <div class="jugador">
+            <img src= "C:\Users\SENA\Downloads\magnus.jpg" alt="Foto de Magnus Carlsen">
+            <h3>🥇 Magnus Carlsen (2841)</h3>
+            <p>Noruega 🇳🇴</p>
+        </div>
+
+        <div class="jugador">
+            <img src="C:\Users\SENA\Downloads\Hikaru nakamura.jpg" alt="Foto de Hikaru Nakamura">
+            <h3>🥈 Hikaru Nakamura (2792)</h3>
+            <p>Estados Unidos 🇺🇸</p>
+        </div>
+
+        <div class="jugador">
+            <img src="C:\Users\SENA\Downloads\AE.jpg" alt="Foto de Arjun Erigaisi">
+            <h3>🥉 Arjun Erigaisi (2761)</h3>
+            <p>India 🇮🇳</p>
+        </div>
+
+        <div class="jugador">
+            <img src="https://ui-avatars.com/api/?name=Fabiano+Caruana&background=5f8f2f&color=fff&size=110" alt="Foto de Fabiano Caruana">
+            <h3>🏅 Fabiano Caruana (2792)</h3>
+            <p>Estados Unidos 🇺🇸</p>
+        </div>
+
+        <div class="jugador">
+            <img src="https://ui-avatars.com/api/?name=Gukesh+Dommaraju&background=81b64c&color=fff&size=110" alt="Foto de Gukesh Dommaraju">
+            <h3>🏅 Gukesh Dommaraju (2732)</h3>
+            <p>India 🇮🇳</p>
+        </div>
+
+    </div>
+</section>
+
+<section id="mapa">
+    <h2>🧠 Mapa conceptual del ajedrez</h2>
+
+    <div class="mapa">
+
+        <div class="centro">
+            ♟️ AJEDREZ ♟️
+        </div>
+
+        <div class="ramas">
+
+            <div class="nodo">
+                <h4>👑 Piezas</h4>
+                <p>Rey, Dama, Torres, Alfiles, Caballos y Peones.</p>
+            </div>
+
+            <div class="nodo">
+                <h4>🎯 Objetivo</h4>
+                <p>Dar jaque mate al rey enemigo.</p>
+            </div>
+
+            <div class="nodo">
+                <h4>📖 Reglas</h4>
+                <p>Movimientos, captura, enroque y promoción.</p>
+            </div>
+
+            <div class="nodo">
+                <h4>⚔️ Táctica</h4>
+                <p>Clavadas, ataques dobles, sacrificios y mates.</p>
+            </div>
+
+            <div class="nodo">
+                <h4>🏰 Aperturas</h4>
+                <p>Inicio de la partida y desarrollo de piezas.</p>
+            </div>
+
+            <div class="nodo">
+                <h4>♜ Medio Juego</h4>
+                <p>Planificación y ataques estratégicos.</p>
+            </div>
+
+            <div class="nodo">
+                <h4>🏁 Finales</h4>
+                <p>Técnicas para ganar con pocas piezas.</p>
+            </div>
+
+            <div class="nodo">
+                <h4>🧠 Habilidades</h4>
+                <p>Lógica, memoria, concentración y paciencia.</p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    ♟️ Proyecto Web de Juan Camilo Muñoz| Hecho con HTML y CSS 
+</footer>
+
+<script>
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+
+navToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('activo');
+});
+
+navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        navLinks.classList.remove('activo');
+    });
+});
+</script>
+
+</body>
+</html>
